@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: Online-Exam-Portal
+
+  server:
+    port: 8000
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/examdb
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: public
