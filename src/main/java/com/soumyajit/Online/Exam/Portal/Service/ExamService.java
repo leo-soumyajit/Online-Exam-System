@@ -5,7 +5,10 @@ import com.soumyajit.Online.Exam.Portal.DTOS.QuestionViewDTO;
 import com.soumyajit.Online.Exam.Portal.Entities.*;
 import com.soumyajit.Online.Exam.Portal.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -45,59 +48,99 @@ public class ExamService {
         return exam;
     }
 
-    public void submitExam(String regNumber, ExamSubmissionDTO dto) {
-        Exam exam = examRepo.findById(dto.getExamId())
-                .orElseThrow(() -> new RuntimeException("Exam not found"));
-
-        Student student = studentRepo.findByRegNumber(regNumber)
+    public void submitExam(String regNumberFromToken) {
+        Student student = studentRepo.findByRegNumber(regNumberFromToken)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-
-        ExamSession session = sessionRepo.findByStudentAndExam(student, exam)
-                .orElseThrow(() -> new RuntimeException("Exam session not found"));
-
+        ExamSession session = sessionRepo.findByStudentAndSubmittedFalse(student)
+                .orElseThrow(() -> new RuntimeException("No active exam session found"));
         if (session.isSubmitted()) {
             throw new RuntimeException("Exam already submitted");
         }
-
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endTime = session.getStartTime().plusMinutes(exam.getDurationMinutes());
-
-        Map<Long, String> submittedAnswers = dto.getAnswers() != null ? dto.getAnswers() : new HashMap<>();
-
-        if (now.isAfter(endTime)) {
-            // Auto-submit whatever answers are present
+        if (now.isAfter(session.getEndTime())) {
             session.setSubmitted(true);
             session.setSubmitTime(now);
-            session.setAnswers(submittedAnswers); // partial or full
             sessionRepo.save(session);
             return;
         }
 
-        // Validate submitted answers
+        Exam exam = session.getExam();
+        Map<Long, String> currentAnswers = session.getAnswers() != null ? session.getAnswers() : new HashMap<>();
         Map<Long, String> validatedAnswers = new HashMap<>();
 
-        for (Map.Entry<Long, String> entry : submittedAnswers.entrySet()) {
+        for (Map.Entry<Long, String> entry : currentAnswers.entrySet()) {
             Long questionId = entry.getKey();
             String selectedOption = entry.getValue();
 
             Question question = exam.getQuestions().stream()
                     .filter(q -> q.getId().equals(questionId))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Invalid question ID: " + questionId));
+                    .orElse(null);
 
-            if (!question.getOptions().contains(selectedOption)) {
-                throw new RuntimeException("Invalid option '" + selectedOption + "' for question ID: " + questionId);
+            if (question != null && question.getOptions().contains(selectedOption)) {
+                validatedAnswers.put(questionId, selectedOption);
             }
-
-            validatedAnswers.put(questionId, selectedOption);
         }
 
-        // Save only validated answers
         session.setAnswers(validatedAnswers);
         session.setSubmitted(true);
         session.setSubmitTime(now);
         sessionRepo.save(session);
     }
+
+
+
+    public void saveAnswer(String regNumber, Long questionId, String answer) {
+        Student student = studentRepo.findByRegNumber(regNumber)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        ExamSession session = sessionRepo.findByStudentAndSubmittedFalse(student)
+                .orElseThrow(() -> new RuntimeException("No active session"));
+
+        if (LocalDateTime.now().isAfter(session.getEndTime())) {
+            autoSubmit(session);
+            throw new RuntimeException("Time’s up. Auto-submitted.");
+        }
+
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Invalid question"));
+
+        if (!question.getOptions().contains(answer)) {
+            throw new RuntimeException("Invalid option for question ID: " + questionId);
+        }
+
+        session.getAnswers().put(questionId, answer);
+        sessionRepo.save(session);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void autoSubmit(ExamSession session) {
+        session.setSubmitted(true);
+        session.setSubmitTime(session.getEndTime());
+        sessionRepo.save(session);
+    }
+
+
+    @Scheduled(fixedRate = 60000) // runs every 60 seconds
+    public void autoSubmitExpiredSessions() {
+        List<ExamSession> expiredSessions = sessionRepo
+                .findBySubmittedFalseAndEndTimeBefore(LocalDateTime.now());
+
+        for (ExamSession session : expiredSessions) {
+            session.setSubmitted(true);
+            session.setSubmitTime(LocalDateTime.now());
+            if (session.getAnswers() == null) {
+                session.setAnswers(new HashMap<>());
+            }
+
+            sessionRepo.save(session);
+        }
+    }
+
+
+
+
 
 
     public List<QuestionViewDTO> getQuestionsForExam(Long examId) {

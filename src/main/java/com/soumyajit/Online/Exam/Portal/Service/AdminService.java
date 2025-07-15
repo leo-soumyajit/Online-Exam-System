@@ -22,8 +22,6 @@ public class AdminService {
     private final ExamRepository examRepo;
     private final QuestionRepository questionRepo;
 
-    // ✅ Helper method to check role
-
     private final AdminRepository adminRepository;
 
     private void ensureAdminAccess() {
@@ -32,7 +30,7 @@ public class AdminService {
             throw new RuntimeException("Unauthorized: Not authenticated");
         }
 
-        String username = auth.getName(); // Gets the current logged-in username
+        String username = auth.getName();
         Admin admin = adminRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -43,7 +41,7 @@ public class AdminService {
 
 
     public Student addStudent(CreateStudentDTO dto) {
-        ensureAdminAccess(); // ✅ only ADMIN can add student
+        ensureAdminAccess();
 
         Student s = new Student();
         s.setName(dto.getName());
@@ -54,7 +52,7 @@ public class AdminService {
     }
 
     public Exam createExam(CreateExamDTO dto) {
-        ensureAdminAccess(); // ✅ only ADMIN can create exam
+        ensureAdminAccess();
 
         Exam e = new Exam();
         e.setTitle(dto.getTitle());
@@ -65,7 +63,7 @@ public class AdminService {
     }
 
     public Question addQuestion(CreateQuestionDTO dto) {
-        ensureAdminAccess(); // ✅ only ADMIN can add question
+        ensureAdminAccess();
 
         Exam exam = examRepo.findById(dto.getExamId())
                 .orElseThrow(() -> new RuntimeException("Exam not found"));
