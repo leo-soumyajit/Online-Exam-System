@@ -5,6 +5,18 @@ The system is designed to streamline the entire exam lifecycle — from exam cre
 
 ---
 
+
+<div align="center">
+  <img src="https://img.shields.io/badge/engineered-with%20precision-9cf?style=for-the-badge&logo=target" />&nbsp;
+  <img src="https://img.shields.io/badge/runs%20on-coffee%20%26%20late%20nights-ff69b4?style=for-the-badge&logo=buymeacoffee" />&nbsp;
+  <img src="https://img.shields.io/badge/debugged%20with-patience-orange?style=for-the-badge&logo=bugatti" />&nbsp;
+  <img src="https://img.shields.io/badge/made%20for-learners-blueviolet?style=for-the-badge&logo=bookstack" />&nbsp;
+</div>
+
+
+
+---
+
 ## 🚀 Features
 
 ## 🧑‍🎓 Student Exam Flow
