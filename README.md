@@ -18,7 +18,7 @@ The system is designed to streamline the entire exam lifecycle — from exam cre
 
 ### 🎓 Internship Project
 
-This project was developed as part of my **internship program** at **[AICTE Oasis Infobyte Internship]**.  
+This project was developed as part of my **internship program** at **AICTE Oasis Infobyte Internship**.  
 It demonstrates hands-on experience with real-world software development practices, including:
 
 - 🔐 Secure backend architecture using **Spring Boot** and **JWT Authentication**
