@@ -1,6 +1,7 @@
 # 🧠 Online Exam Portal
 
-This is the **backend** of an Online Exam Portal built using **Spring Boot**. It handles authentication, exam creation, question management, and student participation, all powered by a secure JWT-based access system.
+This is the backend for an **Online Exam Portal** developed using **Spring Boot**. It provides a complete solution for managing online examinations with secure student participation and admin control.
+The system is designed to streamline the entire exam lifecycle — from exam creation and question management by admins, to live participation, answer saving, and submission tracking for students.
 
 ---
 
