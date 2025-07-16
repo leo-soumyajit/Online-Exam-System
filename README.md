@@ -64,26 +64,45 @@ Fields:
 
 ## 🛠️ Tech Stack
 
-| Layer     | Technology                  |
-|----------|-----------------------------|
-| Backend  | Spring Boot, Spring Security|
-| Auth     | JSON Web Tokens (JWT)       |
-| Database | MySQL / PostgreSQL          |
-| Build    | Maven                       |
-| Tooling  | Postman, Swagger (optional) |
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ_IDEA-000000?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚙️ Setup & Run Locally
 
-### Prerequisites
-
-- Java 17+
-- Maven
-- MySQL (or any JDBC-compatible DB)
-
-### 1. Clone the Repository
+### 📦 Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/online-exam-portal.git
-cd online-exam-portal
+git clone https://github.com/leo-soumyajit/Online-Exam-System.git
+cd Online-Exam-System
+```
+🛠 Configure Database Connection
+Edit the application.properties file:
+```bash
+spring.datasource.url=jdbc:postgresql://localhost:5432/<your_db_name>
+spring.datasource.username=your_db_username
+spring.datasource.password=your_db_password
+```
+▶ Run the Application
+```bash
+./mvnw spring-boot:run
+```
+
+🐦 Try Endpoints in Postman:
+> 🔗 View the full API reference in [Postman Collection](https://www.postman.com/newsly-0222/workspace/online-exam-portal)
+
+
+### 📄 Access Swagger API Docs
+Once the server is running, open in browser:
+```bash
+http://localhost:7000/swagger-ui/index.html
+```
+---
