@@ -6,7 +6,7 @@ This is the **backend** of an Online Exam Portal built using **Spring Boot**. It
 
 ## 🚀 Features
 
-### 🧑‍🎓 Student Exam Flow
+## 🧑‍🎓 Student Exam Flow
 
 #### 🔗 Join Exam
 **POST** `/student/join-exam?accessToken=xxxx`  
@@ -51,13 +51,13 @@ Returns:
 - Submitted answers
 - Whether the exam was submitted manually or auto-submitted
 
-### 📊 Analyze Performance (Coming Soon)
-Planned features include:
-- Score calculation
-- Result sheet exports
-- Exam-wise analytics
-
-
+### 👤 Add Students  
+**POST** `/admin/add-student`  
+Registers a student to the platform.  
+Fields:
+- Name  
+- Registration number  
+- Date of Birth (used as password)  
 
 
 ---
