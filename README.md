@@ -14,6 +14,20 @@ The system is designed to streamline the entire exam lifecycle — from exam cre
 </div>
 
 
+---
+
+### 🎓 Internship Project
+
+This project was developed as part of my **internship program** at **[AICTE Oasis Infobyte Internship]**.  
+It demonstrates hands-on experience with real-world software development practices, including:
+
+- 🔐 Secure backend architecture using **Spring Boot** and **JWT Authentication**
+- 🧪 API testing via **Postman**
+- 🛠️ Practical usage of **Hibernet**, **Spring Data JPA**, and **PostgreSQL**
+- 📦 Clean modular codebase following **REST principles**
+- 🧩 Built using the **MVC design pattern** and follows a **monolithic architecture** for simplicity and maintainability
+
+> 📌 This project reflects my ability to contribute to scalable backend systems and follow best practices in a production-like environment.
 
 ---
 
